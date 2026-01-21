@@ -1,0 +1,59 @@
+[versions]
+graphql-kotlin = "8.3.0"
+graphql-java = "22.4"
+jackson = "2.17.1"
+kotlin = "1.9.24"
+fastjson2 = "2.0.53"
+slf4j = "2.0.13"
+spring = "6.1.10"
+spring-boot = "3.2.7"
+
+# test dependencies
+junit = "5.10.2"
+mockk = "1.13.11"
+
+# plugins
+detekt = "1.23.6"
+ktlint-plugin = "12.1.1"
+
+[libraries]
+# graphql-kotlin dependencies
+graphql-kotlin-schema-generator = { group = "com.expediagroup", name = "graphql-kotlin-schema-generator", version.ref = "graphql-kotlin" }
+graphql-kotlin-federation = { group = "com.expediagroup", name = "graphql-kotlin-federation", version.ref = "graphql-kotlin" }
+graphql-kotlin-dataloader-instrumentation = { group = "com.expediagroup", name = "graphql-kotlin-dataloader-instrumentation", version.ref = "graphql-kotlin" }
+graphql-kotlin-automatic-persisted-queries = { group = "com.expediagroup", name = "graphql-kotlin-automatic-persisted-queries", version.ref = "graphql-kotlin" }
+
+# core dependencies
+graphql-java = { group = "com.graphql-java", name = "graphql-java", version.ref = "graphql-java" }
+jackson = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+fastjson2 = { group = "com.alibaba.fastjson2", name = "fastjson2-kotlin", version.ref = "fastjson2" }
+
+# spring dependencies
+spring-boot-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-websocket = { group = "org.springframework.boot", name = "spring-boot-starter-websocket", version.ref = "spring-boot" }
+spring-boot-config = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "spring-boot" }
+spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring" }
+
+# test dependencies
+junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
+junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlin-junit-test = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+spring-boot-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring-boot" }
+
+# build src plugin libraries
+detekt-plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ktlint-plugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint-plugin" }
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
