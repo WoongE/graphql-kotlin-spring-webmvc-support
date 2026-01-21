@@ -1,4 +1,4 @@
-rootProject.name = "graphql-kotlin-webmvc-parent"
+rootProject.name = "graphql-kotlin-spring-webmvc-support"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
