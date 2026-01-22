@@ -16,6 +16,9 @@
 
 package io.github.woong.graphql.server.types
 
+import com.alibaba.fastjson2.JSONReader
+import com.alibaba.fastjson2.annotation.JSONType
+import com.alibaba.fastjson2.reader.ObjectReader
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -25,11 +28,16 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.github.woong.graphql.server.extensions.readAs
+import io.github.woong.graphql.server.extensions.readAsArray
+import io.github.woong.graphql.server.types.serializers.FastJsonIncludeNonNullProperty
+import java.lang.reflect.Type
 
 /**
  * GraphQL server request abstraction that provides a convenient way to handle both single and batch requests.
  */
 @JsonDeserialize(using = GraphQLServerRequestDeserializer::class)
+@JSONType(deserializer = FastJsonGraphQLServerRequestDeserializer::class)
 sealed class GraphQLServerRequest
 
 /**
@@ -38,6 +46,7 @@ sealed class GraphQLServerRequest
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
+@JSONType(serializeFilters = [FastJsonIncludeNonNullProperty::class])
 data class GraphQLRequest(
     val query: String = "",
     val operationName: String? = null,
@@ -59,6 +68,9 @@ data class GraphQLBatchRequest
         constructor(vararg requests: GraphQLRequest) : this(requests.toList())
     }
 
+/**
+ * Jackson deserializer for [GraphQLServerRequest] that handles both single and batch requests.
+ */
 class GraphQLServerRequestDeserializer : JsonDeserializer<GraphQLServerRequest>() {
     override fun deserialize(
         parser: JsonParser,
@@ -70,6 +82,25 @@ class GraphQLServerRequestDeserializer : JsonDeserializer<GraphQLServerRequest>(
             codec.treeToValue(jsonNode, GraphQLBatchRequest::class.java)
         } else {
             codec.treeToValue(jsonNode, GraphQLRequest::class.java)
+        }
+    }
+}
+
+/**
+ * FastJson deserializer for [GraphQLServerRequest] that handles both single and batch requests.
+ */
+object FastJsonGraphQLServerRequestDeserializer : ObjectReader<GraphQLServerRequest> {
+    override fun readObject(
+        jsonReader: JSONReader?,
+        fieldType: Type?,
+        fieldName: Any?,
+        features: Long,
+    ): GraphQLServerRequest? {
+        if (jsonReader == null || jsonReader.nextIfNull()) return null
+        return if (jsonReader.isArray) {
+            GraphQLBatchRequest(jsonReader.readAsArray<GraphQLRequest>())
+        } else {
+            jsonReader.readAs<GraphQLRequest>()
         }
     }
 }

@@ -16,8 +16,10 @@
 
 package io.github.woong.graphql.server.types
 
+import com.alibaba.fastjson2.annotation.JSONType
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import io.github.woong.graphql.server.types.serializers.FastJsonIncludeNonNullProperty
 
 /**
  * GraphQL error representation that is spec complaint with serialization and deserialization.
@@ -26,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JSONType(serializeFilters = [FastJsonIncludeNonNullProperty::class])
 data class GraphQLServerError(
     val message: String,
     val locations: List<GraphQLSourceLocation>? = null,

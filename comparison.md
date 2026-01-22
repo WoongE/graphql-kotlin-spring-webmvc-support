@@ -21,7 +21,7 @@
 | **extensions/** |
 | dataFetchingEnvironmentExtensions.kt | ✅ | ✅ | 동일 |
 | instrumentationExtensions.kt | ✅ | ✅ | 동일 |
-| jsonReaderExtensions.kt | ✅ | ❌ | FastJson 전용, 미구현 |
+| jsonReaderExtensions.kt | ✅ | ✅ | 동일 |
 | requestExtensions.kt | ✅ | ✅ | 동일 |
 | responseExtensions.kt | ✅ | ✅ | 동일 |
 | **operations/** |
@@ -29,14 +29,14 @@
 | Query.kt | ✅ | ✅ | 동일 |
 | Subscription.kt | ✅ | ✅ | 동일 |
 | **types/** |
-| GraphQLServerError.kt | ✅ | ✅ | FastJson 어노테이션 제거 |
-| GraphQLServerRequest.kt | ✅ | ✅ | FastJson 지원 제거 |
-| GraphQLServerResponse.kt | ✅ | ✅ | FastJson 제거, error() 헬퍼 추가 |
+| GraphQLServerError.kt | ✅ | ✅ | 동일 |
+| GraphQLServerRequest.kt | ✅ | ✅ | 동일 |
+| GraphQLServerResponse.kt | ✅ | ✅ | error() 헬퍼 추가 |
 | GraphQLSourceLocation.kt | ✅ | ✅ | 동일 |
 | GraphQLSubscriptionMessage.kt | ✅ | ❌ | 미구현 |
 | GraphQLSubscriptionStatus.kt | ✅ | ❌ | 미구현 |
 | **types/serializers/** |
-| FastJsonIncludeNonNullProperty.kt | ✅ | ❌ | FastJson 전용, 미구현 |
+| FastJsonIncludeNonNullProperty.kt | ✅ | ✅ | 동일 |
 | **기타** |
 | Schema.kt | ✅ | ❌ | 미구현 |
 
@@ -125,18 +125,7 @@ private fun executeConcurrently(...): GraphQLBatchResponse {
 }
 ```
 
-### 4. FastJson 지원 제거
-
-원본은 Jackson과 FastJson 두 가지 JSON 라이브러리를 지원합니다.
-WebMVC 버전은 Jackson만 지원합니다.
-
-제거된 항목:
-- `@JSONType` 어노테이션
-- `FastJsonIncludeNonNullProperty` 필터
-- `FastJsonGraphQLServerRequestDeserializer`
-- `jsonReaderExtensions.kt`
-
-### 5. GraphQLResponse.error() 헬퍼 추가
+### 4. GraphQLResponse.error() 헬퍼 추가
 
 WebMVC 버전에만 있는 편의 메서드입니다.
 
@@ -162,10 +151,6 @@ data class GraphQLResponse<T>(...) : GraphQLServerResponse() {
 - `types/GraphQLSubscriptionMessage.kt`
 - `types/GraphQLSubscriptionStatus.kt`
 
-### FastJson 관련 (2개 파일)
-- `extensions/jsonReaderExtensions.kt`
-- `types/serializers/FastJsonIncludeNonNullProperty.kt`
-
 ### 기타
 - `Schema.kt` - 스키마 유틸리티
 
@@ -175,7 +160,6 @@ data class GraphQLResponse<T>(...) : GraphQLServerResponse() {
 
 | 기능 | 이유 |
 |------|------|
-| FastJson 지원 | Spring WebMVC는 기본적으로 Jackson 사용, 복잡도 감소 |
 | Coroutine 컨텍스트 관리 | WebMVC는 blocking 방식이므로 불필요 |
 
 ---

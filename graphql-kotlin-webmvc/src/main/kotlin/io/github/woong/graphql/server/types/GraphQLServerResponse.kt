@@ -16,6 +16,7 @@
 
 package io.github.woong.graphql.server.types
 
+import com.alibaba.fastjson2.annotation.JSONType
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.github.woong.graphql.server.extensions.toGraphQLError
 import io.github.woong.graphql.server.extensions.toGraphQLKotlinType
+import io.github.woong.graphql.server.types.serializers.FastJsonIncludeNonNullProperty
 
 /**
  * GraphQL server response abstraction that provides a convenient way to handle both single and batch responses.
@@ -40,6 +42,7 @@ sealed class GraphQLServerResponse
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
+@JSONType(serializeFilters = [FastJsonIncludeNonNullProperty::class])
 data class GraphQLResponse<T>(
     val data: T? = null,
     val errors: List<GraphQLServerError>? = null,
